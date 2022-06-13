@@ -1,3 +1,7 @@
+# self defined setting
+/reference/*
+/data/*
+
 # Byte-compiled / optimized / DLL files
 __pycache__/
 *.py[cod]
