@@ -88,8 +88,8 @@ if __name__ == '__main__':
 
     attrs = get_attr_dict(cfg.DATA.ATTR_FILE)
 
-    train_dataset = Dataset(cfg, cfg.DATA.TRAIN_FILE, attrs, cfg.MODE, validate_rate = cfg.VALID_RATE)  # cfg.MODE is set to 'train' 
-    valid_dataset = Dataset(cfg, cfg.DATA.TRAIN_FILE, attrs, 'valid', validate_rate = cfg.VALID_RATE)
+    train_dataset = Dataset(cfg, cfg.DATA.TRAIN_FILE, attrs, cfg.MODE, validate_rate = cfg.TRAIN.VALID_RATE)  # cfg.MODE is set to 'train' 
+    valid_dataset = Dataset(cfg, cfg.DATA.TRAIN_FILE, attrs, 'valid', validate_rate = cfg.TRAIN.VALID_RATE)
     test_dataset = Dataset(cfg, cfg.DATA.TEST_FILE, attrs, 'test')
     
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=cfg.TRAIN.BATCH_SIZE, shuffle=True)
