@@ -64,6 +64,7 @@ def validate(cfg, model, device, validate_loader):
             for batch_idx, (user, item, target, attr1, attr2) in enumerate(validate_loader):
                 user, item, attr1, attr2 = user.to(device), item.to(device), attr1.to(device).int(), attr2.to(device).int()
                 output = model(device, user, item, attr1, attr2)
+                target = target.to(device).float()
                 target = target / 10  # normalize the target
                 # validate the output with the target
                 loss = nn.MSELoss(reduction='mean')(output.squeeze(), target)
@@ -81,8 +82,8 @@ if __name__ == '__main__':
 
     attrs = get_attr_dict(cfg.DATA.ATTR_FILE)
 
-    train_dataset = Dataset(cfg, cfg.DATA.TRAIN_FILE, attrs, cfg.MODE)  # cfg.MODE is set to 'train' 
-    valid_dataset = Dataset(cfg, cfg.DATA.TRAIN_FILE, attrs, 'valid')
+    train_dataset = Dataset(cfg, cfg.DATA.TRAIN_FILE, attrs, cfg.MODE, validate_rate = cfg.VALID_RATE)  # cfg.MODE is set to 'train' 
+    valid_dataset = Dataset(cfg, cfg.DATA.TRAIN_FILE, attrs, 'valid', validate_rate = cfg.VALID_RATE)
     test_dataset = Dataset(cfg, cfg.DATA.TEST_FILE, attrs, 'test')
     
     train_loader = torch.utils.data.DataLoader(train_dataset, batch_size=cfg.TRAIN.BATCH_SIZE, shuffle=True)
@@ -100,12 +101,12 @@ if __name__ == '__main__':
     for epoch in range(cfg.TRAIN.MAX_EPOCH):
         print('Epoch: {} training ...'.format(epoch))
         total_loss = train(cfg, model, device, train_loader, optimizer)
-        valida_losst = validate(cfg, model, device, valid_loader)
+        valida_loss = validate(cfg, model, device, valid_loader)
 
-        print('Epoch: {}, Train Loss: {}, Validate Loss: {}'.format(epoch, total_loss, valida_losst))
-        if epoch + 1 % cfg.TRAIN.SAVE_EPOCH == 0:
+        print('Epoch: {}, Train Loss: {}, Validate Loss: {}'.format(epoch, total_loss, valida_loss))
+        if epoch + 1 % cfg.TRAIN.SAVE_EVERY == 0:
             print('Saving model, epoch: {}'.format(epoch))
-            model.save_model(os.path.join(cfg.TRAIN.SAVE_PATH, 'model_epoch_{}.pth'.format(epoch)))
+            model.save_model(os.path.join(cfg.TRAIN.SAVE_PATH, 'model_epoch_{}.pth'.format(epoch + 1)))
 
     # test the model
     test(cfg, model, device, test_loader)

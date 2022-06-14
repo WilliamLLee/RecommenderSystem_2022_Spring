@@ -29,9 +29,10 @@ class Dataset(data.Dataset):
         if validate_rate is not None:
             if type == 'train':
                 self.frame = self.frame.iloc[:int(len(self.frame) * (1 - validate_rate))]
+                print('train set size:', len(self.frame))
             elif type == 'valid':
                 self.frame = self.frame.iloc[int(len(self.frame) * (1 - validate_rate)):]
-             
+                print('valid set size:', len(self.frame))
     def __len__(self):
         return len(self.frame)
     

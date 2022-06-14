@@ -52,7 +52,7 @@ _C.TRAIN.BATCH_SIZE = 128
 _C.TRAIN.LR = 0.001
 _C.TRAIN.WEIGHT_DECAY = 0.001
 _C.TRAIN.VALID_RATE = 0.1
-_C.TRAIN.SAVE_EVERY = 20
+_C.TRAIN.SAVE_EVERY = 1
 _C.TRAIN.SAVE_PATH = './checkpoints/'
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
