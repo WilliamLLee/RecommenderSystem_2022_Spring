@@ -1,6 +1,8 @@
 # self defined setting
 /reference/*
 /data/*
+/checkpoints/*
+!/checkpoints/.gitkeep
 !/data/.gitkeep
 
 # Byte-compiled / optimized / DLL files

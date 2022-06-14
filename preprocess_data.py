@@ -16,7 +16,7 @@ print("去除重复的user, item 对后数据集规模：", df_train.shape)
 print("训练数据集评分情况统计1: \n", df_train['rating'].describe())
 print("训练数据集评分情况统计2: \n", df_train['rating'].value_counts(sort=True, ascending=False, bins = 10))
 # print("训练数据集评分情况统计3: \n", df_train['rating'].value_counts(sort=True).plot(kind='bar'))
-plt.show()
+# plt.show()
 
 # # show the data score distribution
 # sns.distplot(df_train['rating'])
