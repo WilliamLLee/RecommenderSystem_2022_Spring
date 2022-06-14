@@ -1,8 +1,4 @@
-from traceback import print_tb
 import pandas as pd
-import seaborn as sns
-import matplotlib.pyplot as plt
-import numpy as np
 
 def read_data(file_name, data_type = 'train'):
     assert data_type in ['train', 'test', 'item'], 'data_type must be train, test or item'

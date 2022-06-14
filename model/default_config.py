@@ -29,7 +29,7 @@ _C.DATA.IDX2ITEM_ID = './data/idx2item_id.json'
 _C.MODEL = CN()
 
 ## RS 
-_C.MODEL.DEVICE = 'cuda'
+_C.MODEL.DEVICE = 'cuda:0'
 _C.MODEL.DROPOUT_RATE1 = 0.15
 _C.MODEL.DROPOUT_RATE2 = 0.20
 _C.MODEL.USER_NUM = 19835

@@ -1,5 +1,9 @@
 from model.utils import *
 import json
+# import seaborn as sns
+# import matplotlib.pyplot as plt
+import numpy as np
+
 train_data = read_data('./data/train.txt', 'train')
 print("训练数据(user, item, rating)数量：", len(train_data[0]))
 # print(train_data[0][0:10], train_data[1][0:10], train_data[2][0:10])
@@ -11,17 +15,17 @@ df_train = df_train.drop_duplicates(subset=['user_id', 'item_id'])
 print("去除重复的user, item 对后数据集规模：", df_train.shape)
 print("训练数据集评分情况统计1: \n", df_train['rating'].describe())
 print("训练数据集评分情况统计2: \n", df_train['rating'].value_counts(sort=True, ascending=False, bins = 10))
-print("训练数据集评分情况统计3: \n", df_train['rating'].value_counts(sort=True).plot(kind='bar'))
+# print("训练数据集评分情况统计3: \n", df_train['rating'].value_counts(sort=True).plot(kind='bar'))
 plt.show()
 
-# show the data score distribution
-sns.distplot(df_train['rating'])
-# add title and save the figure
-plt.title('Rating Distribution')
-plt.xlabel('Rating')
-plt.ylabel('Frequency')
-plt.savefig('./files/rating_distribution.png')
-plt.show()
+# # show the data score distribution
+# sns.distplot(df_train['rating'])
+# # add title and save the figure
+# plt.title('Rating Distribution')
+# plt.xlabel('Rating')
+# plt.ylabel('Frequency')
+# plt.savefig('./files/rating_distribution.png')
+# plt.show()
 
 print('*'*50)
 test_data = read_data('./data/test.txt', 'test')
