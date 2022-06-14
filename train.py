@@ -59,6 +59,7 @@ def test(cfg, model, device, test_loader):
 def validate(cfg, model, device, validate_loader):
     model.eval()
     total_loss = 0
+    errors = []
     with torch.no_grad():
         with tqdm(total=len(validate_loader), desc='Validate') as pbar:
             for batch_idx, (user, item, target, attr1, attr2) in enumerate(validate_loader):
@@ -68,9 +69,14 @@ def validate(cfg, model, device, validate_loader):
                 target = target / 10  # normalize the target
                 # validate the output with the target
                 loss = nn.MSELoss(reduction='mean')(output.squeeze(), target)
+                # calculate error and append to errors list
+                errors.append(torch.abs(output.squeeze() - target).item())
                 total_loss = total_loss + loss.item()
                 pbar.update(1)
-    return total_loss / len(validate_loader)
+    # calculate the RMSE and MAE
+    rmse = torch.sqrt(torch.mean(torch.tensor(errors)))
+    mae = torch.mean(torch.tensor(errors))
+    return total_loss / len(validate_loader), rmse, mae
 
 
 if __name__ == '__main__':
@@ -101,10 +107,10 @@ if __name__ == '__main__':
     for epoch in range(cfg.TRAIN.MAX_EPOCH):
         print('Epoch: {} training ...'.format(epoch))
         total_loss = train(cfg, model, device, train_loader, optimizer)
-        valida_loss = validate(cfg, model, device, valid_loader)
+        valida_loss, rmse, mae = validate(cfg, model, device, valid_loader)
 
-        print('Epoch: {}, Train Loss: {}, Validate Loss: {}'.format(epoch, total_loss, valida_loss))
-        if epoch + 1 % cfg.TRAIN.SAVE_EVERY == 0:
+        print('Epoch: {}, Train Loss: {}, Validate Loss: {}, RMSE: {}, MAE: {}'.format(epoch + 1, total_loss, valida_loss, rmse, mae))
+        if (epoch + 1) % cfg.TRAIN.SAVE_EVERY == 0:
             print('Saving model, epoch: {}'.format(epoch))
             model.save_model(os.path.join(cfg.TRAIN.SAVE_PATH, 'model_epoch_{}.pth'.format(epoch + 1)))
 
