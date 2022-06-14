@@ -29,7 +29,7 @@ _C.DATA.IDX2ITEM_ID = './data/idx2item_id.json'
 _C.MODEL = CN()
 
 ## RS 
-_C.MODEL.DEVICE = 'cuda:0'
+_C.MODEL.DEVICE = 'cpu'
 _C.MODEL.DROPOUT_RATE1 = 0.15
 _C.MODEL.DROPOUT_RATE2 = 0.20
 _C.MODEL.USER_NUM = 19835
@@ -48,12 +48,12 @@ _C.MODEL.PARA2 = 512
 ##########################################################################
 _C.TRAIN = CN()
 _C.TRAIN.MAX_EPOCH = 200
-_C.TRAIN.BATCH_SIZE = 128
+_C.TRAIN.BATCH_SIZE = 10
 _C.TRAIN.LR = 0.001
 _C.TRAIN.WEIGHT_DECAY = 0.001
 _C.TRAIN.VALID_RATE = 0.1
 _C.TRAIN.SAVE_EVERY = 1
-_C.TRAIN.SAVE_PATH = './checkpoints/'
+_C.TRAIN.SAVE_PATH = './checkpoints/new_model/'
 #+++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
 
@@ -62,7 +62,7 @@ _C.TRAIN.SAVE_PATH = './checkpoints/'
 ## for test config setting
 ##########################################################################
 _C.TEST = CN()
-_C.TEST.BATCH_SIZE = 128
+_C.TEST.BATCH_SIZE = 10
 
 #*************************************************************************
 

@@ -69,12 +69,12 @@ def validate(cfg, model, device, validate_loader):
                 target = target / 10  # normalize the target
                 # validate the output with the target
                 loss = nn.MSELoss(reduction='mean')(output.squeeze(), target)
-                # calculate error and append to errors list
-                errors.append(torch.abs(output.squeeze() - target).item())
+                # calculate the absolute errors and extend them to errors list
+                errors.extend(torch.abs(output.squeeze() - target).tolist())
                 total_loss = total_loss + loss.item()
                 pbar.update(1)
     # calculate the RMSE and MAE
-    rmse = torch.sqrt(torch.mean(torch.tensor(errors)))
+    rmse = torch.sqrt(torch.mean(torch.tensor(errors).pow(2)))
     mae = torch.mean(torch.tensor(errors))
     return total_loss / len(validate_loader), rmse, mae
 
@@ -112,6 +112,8 @@ if __name__ == '__main__':
         print('Epoch: {}, Train Loss: {}, Validate Loss: {}, RMSE: {}, MAE: {}'.format(epoch + 1, total_loss, valida_loss, rmse, mae))
         if (epoch + 1) % cfg.TRAIN.SAVE_EVERY == 0:
             print('Saving model, epoch: {}'.format(epoch))
+            if not os.path.exists(cfg.TRAIN.SAVE_PATH):
+                os.makedirs(cfg.TRAIN.SAVE_PATH)
             model.save_model(os.path.join(cfg.TRAIN.SAVE_PATH, 'model_epoch_{}.pth'.format(epoch + 1)))
 
     # test the model
